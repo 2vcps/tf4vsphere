@@ -1,7 +1,0 @@
----
-crio_packages:
-  - cri-o
-  - oci-systemd-hook
-
-crio_service: crio
-crio_conmon: /usr/libexec/crio/conmon
