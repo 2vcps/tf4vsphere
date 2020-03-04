@@ -1,0 +1,60 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name:    Install prerequisites
+    apt:     
+      name: ['open-iscsi', 'multipath-tools', 'nfs-common', 'apt-transport-https', 'curl']
+      update_cache: yes
+  - name:    Create directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+    with_items:
+      - /etc/multipath
+  - name: Create a multipath.conf
+    file:
+      path: /etc/multipath.conf
+      state: touch
+      mode: 0755
+  - name: remove cloned iqn if it exists
+    lineinfile:
+      path: /etc/iscsi/initiatorname.iscsi
+      state: absent
+      regexp: 'InitiatorName=iqn.1993-08.org.debian:01:2639afbeb977'
+  - name: remove cloned iqn if it exists2
+    lineinfile:
+      path: /etc/iscsi/initiatorname.iscsi
+      state: absent
+      regexp: 'InitiatorName=iqn.1993-08.org.debian:01:18489b34fad7'
+  - name: disable hostname reconfig
+    lineinfile:
+      dest: /etc/cloud/cloud.cfg
+      state: absent
+      line: "preserve_hostname: false"
+  # - name: enable hostname stay the same
+  #   lineinfile:
+  #     dest: /etc/cloud/cloud.cfg
+  #     state: present
+  #     line: "preserve_hostname: true"
+  - name: Create IQN
+    lineinfile:
+      dest: /etc/iscsi/initiatorname.iscsi
+      state: present
+      line: InitiatorName=iqn.1993-08.org.debian:01:{{ ansible_hostname }}
+  # - name: disble network stupidness
+  #   copy:
+  #     src: ./99-disable-network-config.cfg
+  #     dest: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+  # - name: Turn off Swap
+  #   raw: swapoff -a
+  # - name: remove swap from fstab
+  #   lineinfile:
+  #     dest: /etc/fstab
+  #     regexp: '^/[\S]+\s+none\s+swap '
+  #     state: absent
+  - name: REstart iscsid
+    service:
+      name: iscsid
+      state: restarted

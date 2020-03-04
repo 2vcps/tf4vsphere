@@ -1,0 +1,9 @@
+- hosts: kube-master
+  become: yes
+  tasks:
+  - name: get me some configs for k8s
+    fetch:
+     src: /etc/kubernetes/admin.conf
+     dest: ./config.{{ inventory_hostname }}
+     flat: yes
+

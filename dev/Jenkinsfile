@@ -1,0 +1,38 @@
+
+podTemplate(yaml: """
+kind: Pod
+spec:
+  serviceAccountName: jenkins-k8s
+  containers:
+  - name: ansible
+    image: harbor.yourdomain/jowings/ansible:v1
+    command:
+    - cat
+    tty: true
+  - name: terraform
+    image: harbor.yourdomain/jowings/terraform:light
+    command:
+    - cat
+    tty: true
+"""
+  ) {
+
+  node(POD_LABEL) {
+    def myRepo = checkout scm
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    stage('terraform the world') {
+      container('terraform') {
+        sh "terraform init"
+        sh "terraform plan -out terraout.out"
+        sh "terraform apply terraout.out"
+      }
+    }
+    stage('Deploy kubespray') {
+      container('ansible') {
+        sh "ansible-playbook -h"
+      }
+    }
+  }   
+}
+
