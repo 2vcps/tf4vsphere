@@ -35,11 +35,11 @@ There is an anisble playbook I use to install the right packages on the VMs (ubu
 ansible-playbook -i dev/inventory.ini -b -v prereqs.yaml 
 ```
 ### Install kubernetes with kubespray
-The kubespray directory here is not automatically updating, I suggest cloning this fresh:
+Get the latest kubespray repo:
 ```
 git clone git@github.com:kubernetes-sigs/kubespray.git
 ```
-There are all kinds of things you can edit in Kubespray. At time of writing this readme the current version of k8s deployed by kubespray is 1.16.7. So far 1.17 is not available but I have found 1.16 to be pretty stable. I am looking for 1.17 so I can get some CSI Snapshot Source features as default without feature gates.
+```<tangent>There are all kinds of things you can edit in Kubespray. At time of writing this readme the current version of k8s deployed by kubespray is 1.16.7. So far 1.17 is not available but I have found 1.16 to be pretty stable. I am looking for 1.17 so I can get some CSI Snapshot Source features as default without feature gates.</tangent>```
 
 Now to run the ansible-playbook for kubespray add more -vvvv if you want more details
 ```
