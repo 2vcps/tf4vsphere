@@ -25,7 +25,7 @@ Within VMware you should now have some shiny new vm's
 # Kubespray
 In your cluster directory make sure the ```inventory.ini```  file matches the IP's for your environment. Additionally make sure your ssh key is copied to your nodes. Ansible is what is underneath kubespray and ansible works best with ssh publickey. Also, to reduce extra flags in ansible you can add NOPASSwD:ALL to your users access for sudo. 
 
-***The "-b" flag tells ansible to "become" another user aka run sudo. The "-K" (uppercase K) will prompt for the sudo password if you are unable to use teh NOPASSWD settings for sudo.***
+***The "-b" flag tells ansible to "become" another user aka run sudo. The "-K" (uppercase K) will prompt for the sudo password if you are unable to use the NOPASSWD settings for sudo.***
 
 If you are going to use PSO make sure you have checked the pre-requisites.
 https://github.com/purestorage/helm-charts
