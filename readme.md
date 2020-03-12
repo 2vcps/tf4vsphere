@@ -31,6 +31,7 @@ If you are going to use PSO make sure you have checked the pre-requisites.
 https://github.com/purestorage/helm-charts
 There is an anisble playbook I use to install the right packages on the VMs (ubuntu).
 
+**To install the Prereqs for Ubuntu** 
 ```
 ansible-playbook -i dev/inventory.ini -b -v prereqs.yaml 
 ```
